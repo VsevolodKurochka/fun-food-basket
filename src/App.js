@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import firebase from './firebase.js';
+import firebase, { auth, provider } from './firebase.js';
 
 // Import own components
+import Navigation from './Nav/Nav';
+
+// Product
+import LoginTemplate from './Authorization/LoginTemplate';
+import LogoutTemplate from './Authorization/LogoutTemplate';
 
 
 class App extends Component {
@@ -11,10 +16,31 @@ class App extends Component {
 		this.state = {
 			name: '',
 			product: '',
-			items: []
+			items: [],
+			user: null
 		}
 		this.getValueFromInput = this.getValueFromInput.bind(this);
 		this.submitForm = this.submitForm.bind(this);
+		this.logIn = this.logIn.bind(this);
+		this.logOut = this.logOut.bind(this);
+	}
+	logIn(){
+		auth.signInWithPopup(provider)
+			.then((result) => {
+				const user = result.user;
+				console.log(user);
+				this.setState({
+					user
+				});
+			});
+	}
+	logOut(){
+		auth.signOut()
+	    .then(() => {
+	      this.setState({
+	        user: null
+	      });
+	    });
 	}
 	getValueFromInput(e){
 		this.setState({
@@ -25,9 +51,20 @@ class App extends Component {
 		e.preventDefault();
 		const itemsRef = firebase.database().ref('items');
 
+		let currentDate = new Date();
+		
+		const date = {
+			timestamp: currentDate,
+			year: currentDate.getFullYear(),
+			month: currentDate.getMonth(),
+			date: currentDate.getDate(),
+			hours: currentDate.getHours(),
+			minutes: currentDate.getMinutes()
+		}
 		const item = {
 			name: this.state.name,
-			product: this.state.product
+			product: this.state.product,
+			time: date
 		}
 
 		itemsRef.push(item);
@@ -38,16 +75,26 @@ class App extends Component {
 		});
 
 	}
+	removeItem(id){
+		const itemsRef = firebase.database().ref('/items/' + id);
+		itemsRef.remove();
+	}
 	componentDidMount(){
+		auth.onAuthStateChanged((user) => {
+	    if (user) {
+	      this.setState({ user });
+	    } 
+	  });
 		const itemsRef = firebase.database().ref('items');
 		itemsRef.on('value', (snapshot) => {
 			let items = snapshot.val();
 			let currentItems = [];
 			for(let item in items){
-				currentItems.push({
+				currentItems.unshift({
 					id: item,
 					name: items[item].name,
-					product: items[item].product
+					product: items[item].product,
+					time: items[item].time
 				})
 			}
 			this.setState({
@@ -58,54 +105,23 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				
-				<div className="uk-section uk-section-large uk-background-muted">
+				<Navigation 
+					user={this.state.user}
+					logOut={this.logOut}
+					logIn={this.logIn}
+				/>
+				<div className="uk-section uk-section-large">
 					<div className="uk-container">
-						<div className="uk-grid-match uk-grid" uk-grid="true">
-							<div className="uk-width-1-3@m">
-								<form className="uk-form-stacked" onSubmit={this.submitForm}>
-									<div className="uk-margin">
-										<label className="uk-form-label" htmlFor="name">What is your name?</label>
-										<div className="uk-inline uk-width-1-1">
-											 <span className="uk-form-icon" uk-icon="icon: user"></span>
-											 <input type="text" id="name" className="uk-input" placeholder="Name" name="name" onChange={this.getValueFromInput}  value={this.state.name}/>
-										</div>
-									</div>
-									<div className="uk-margin">
-										<label className="uk-form-label" htmlFor="product">Product</label>
-										<div className="uk-inline uk-width-1-1">
-											 <span className="uk-form-icon" uk-icon="icon: list"></span>
-											 <input type="text" id="product" className="uk-input" placeholder="Product" name="product" onChange={this.getValueFromInput} value={this.state.product}/>
-										</div>
-									</div>
-									<div className="uk-text-right">
-										<button type="submit" className="uk-button uk-button-primary">Add product</button>
-									</div>
-								</form>
-							</div>
-							<div className="uk-width-2-3@m">
-								<div className="uk-grid-match uk-grid" uk-grid="true">
-									<div className="uk-width-1-2@m">
-										<div className="uk-card uk-card-default">
-											<div className="uk-card-header">
-												<div className="uk-grid-small uk-flex-middle" uk-grid="true">
-													<h3 className="uk-card-title uk-margin-remove-bottom">Title</h3>
-													<p className="uk-text-meta uk-margin-remove-top">
-														<time dateTime="2016-04-01T19:00">April 01, 2016</time>
-													</p>
-												</div>
-											</div>
-											<div className="uk-card-body">
-													<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-											</div>
-											<div className="uk-card-footer">
-												<button className="uk-button uk-button-danger">Remove Item</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						{this.state.user ? 
+							<LoginTemplate
+								items={this.state.items}
+								submitForm={this.submitForm}
+								getValueFromInput={this.getValueFromInput}
+								name={this.state.name}
+								product={this.state.product}
+							/> : 
+							<LogoutTemplate logIn={this.logIn} />
+						}
 					</div>
 				</div>
 			</div>
@@ -114,3 +130,7 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+
+*/
