@@ -15,7 +15,7 @@ class ProductForm extends Component{
 						 				name="name" 
 						 				required="required"
 						 				onChange={this.props.getValueFromInput} 
-						 				value={this.props.name}/>
+						 				value={this.props.user.displayName || this.props.name}/>
 					</div>
 				</div>
 				<div className="uk-margin">

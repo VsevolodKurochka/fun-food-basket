@@ -118,6 +118,7 @@ class App extends Component {
 						name={this.state.name}
 						product={this.state.product}
 						removeItem={this.removeItem}
+						user={this.state.user}
 					/> : 
 					<LogoutTemplate logIn={this.logIn} />
 				}
