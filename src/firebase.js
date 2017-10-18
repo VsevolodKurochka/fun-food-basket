@@ -1,4 +1,4 @@
-import 'firebase' from firebase;
+import firebase from 'firebase';
 let config = {
   apiKey: "AIzaSyDBnewhyskAOgbFK5T_IKcRw1_KqssyWw0",
   authDomain: "kitchen-of-design.firebaseapp.com",
