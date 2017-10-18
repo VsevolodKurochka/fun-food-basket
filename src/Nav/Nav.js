@@ -5,7 +5,7 @@ class Navigation extends Component{
 		return(
 			<nav className="uk-navbar-container vak-navbar-container" uk-navbar="true">
 				<div className="uk-navbar-left">
-					<a className="uk-navbar-item uk-logo vak-logo" href="#">Fun food friends</a>
+					<p className="uk-navbar-item uk-logo vak-logo">Fun food friends</p>
 				</div>
 				<div className="uk-navbar-right">
 					<div className="uk-navbar-item">

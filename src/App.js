@@ -110,20 +110,17 @@ class App extends Component {
 					logOut={this.logOut}
 					logIn={this.logIn}
 				/>
-				<div className="uk-section uk-section-large">
-					<div className="uk-container">
-						{this.state.user ? 
-							<LoginTemplate
-								items={this.state.items}
-								submitForm={this.submitForm}
-								getValueFromInput={this.getValueFromInput}
-								name={this.state.name}
-								product={this.state.product}
-							/> : 
-							<LogoutTemplate logIn={this.logIn} />
-						}
-					</div>
-				</div>
+				{this.state.user ? 
+					<LoginTemplate
+						items={this.state.items}
+						submitForm={this.submitForm}
+						getValueFromInput={this.getValueFromInput}
+						name={this.state.name}
+						product={this.state.product}
+						removeItem={this.removeItem}
+					/> : 
+					<LogoutTemplate logIn={this.logIn} />
+				}
 			</div>
 		);
 	}
