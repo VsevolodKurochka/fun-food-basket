@@ -19,7 +19,7 @@ class LoginTemplate extends Component {
 								/>
 							</div>
 							<div className="uk-width-2-3@m">
-								<div className="uk-grid-match uk-grid uk-child-width-1-2@m uk-grid-product" uk-grid="true">
+								<ul className="uk-list uk-list-striped">
 									{this.props.items.length ?
 										this.props.items.map((item, index)=>{
 											return <ProductItem data={item} user={this.props.user} key={item.id} removeItem={()=>{
@@ -31,7 +31,7 @@ class LoginTemplate extends Component {
 											<p>Add elements with form.</p>
 										</div>
 									}
-								</div>
+								</ul>
 							</div>
 						</div>
 					</div>

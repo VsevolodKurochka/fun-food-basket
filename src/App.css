@@ -7,6 +7,21 @@
 	padding-bottom: 15px;
 	line-height: 1.4;
 }
-.uk-card-wrapper.uk-first-column .uk-card {
-	background-color: #f7f7f7;
+.product-item{
+	position: relative;
+	margin-bottom: 15px;
+}
+.product-item p {
+	margin-top: 0;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+}
+.product-item-element .uk-icon{
+	margin-right: 15px;
+}
+.product-item-delete {
+	position: absolute;
+	right: 15px;
+	top: 15px;
 }
