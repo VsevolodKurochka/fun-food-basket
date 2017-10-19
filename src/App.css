@@ -7,3 +7,6 @@
 	padding-bottom: 15px;
 	line-height: 1.4;
 }
+.uk-card-wrapper.uk-first-column .uk-card {
+	background-color: #f7f7f7;
+}

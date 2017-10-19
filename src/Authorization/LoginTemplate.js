@@ -14,16 +14,15 @@ class LoginTemplate extends Component {
 								<ProductForm 
 									submitForm={this.props.submitForm}
 									getValueFromInput={this.props.getValueFromInput}
-									name={this.props.name}
 									product={this.props.product}
 									user={this.props.user}
 								/>
 							</div>
 							<div className="uk-width-2-3@m">
-								<div className="uk-grid-match uk-grid uk-child-width-1-2@m" uk-grid="true">
+								<div className="uk-grid-match uk-grid uk-child-width-1-2@m uk-grid-product" uk-grid="true">
 									{this.props.items.length ?
 										this.props.items.map((item, index)=>{
-											return <ProductItem data={item} key={item.id} removeItem={()=>{
+											return <ProductItem data={item} user={this.props.user} key={item.id} removeItem={()=>{
 												this.props.removeItem(item.id)
 											}} />
 										})

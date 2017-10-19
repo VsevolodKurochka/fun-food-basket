@@ -14,10 +14,10 @@ class App extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			name: '',
 			product: '',
 			items: [],
-			user: null
+			user: null,
+			date: new Date()
 		}
 		this.getValueFromInput = this.getValueFromInput.bind(this);
 		this.submitForm = this.submitForm.bind(this);
@@ -62,7 +62,7 @@ class App extends Component {
 			minutes: currentDate.getMinutes()
 		}
 		const item = {
-			name: this.state.name,
+			name: this.state.user.displayName,
 			product: this.state.product,
 			time: date
 		}
@@ -70,7 +70,6 @@ class App extends Component {
 		itemsRef.push(item);
 
 		this.setState({
-			name: '',
 			product: ''
 		});
 
@@ -115,7 +114,6 @@ class App extends Component {
 						items={this.state.items}
 						submitForm={this.submitForm}
 						getValueFromInput={this.getValueFromInput}
-						name={this.state.name}
 						product={this.state.product}
 						removeItem={this.removeItem}
 						user={this.state.user}
